@@ -32,29 +32,20 @@ public class Rewind : MonoBehaviour
 
     private void Update()
     {
-        if(saveTransforms)
-        {
-            rewindPositions.Add(myTransform.position);
-            rewindRotations.Add(myTransform.rotation);
-        }
 
-        if(Time.time >= recordStartTime + rewindDuration && saveTransforms)
+        if (Time.time >= recordStartTime + rewindDuration && saveTransforms)
         {
             EndRewindRecording();
         }
 
-        if(doRewind)
+        if (saveTransforms)
         {
-            myTransform.position = rewindPositions[rewindPosIndex];
-            myTransform.rotation = rewindRotations[rewindQuatIndex];
+            RecordTransform();
+        }
 
-            rewindPosIndex--;
-            rewindQuatIndex--;
-
-            if(rewindPosIndex < 0 || rewindQuatIndex < 0)
-            {
-                EndRewinding();
-            }
+        if (doRewind)
+        {
+            RewindToTransform();
         }
     }
 
@@ -62,10 +53,7 @@ public class Rewind : MonoBehaviour
     {
         if (saveTransforms) return;
 
-        rewindPositions.Add(myTransform.position);
-        rewindRotations.Add(myTransform.rotation);
-
-        Debug.Log(myTransform.position);
+        RecordTransform();
 
         recordStartTime = Time.time;
         saveTransforms = true;
@@ -82,6 +70,8 @@ public class Rewind : MonoBehaviour
 
     public void RewindObject()
     {
+        EndRewindRecording();
+
         rewindPosIndex = rewindPositions.Count - 1;
         rewindQuatIndex = rewindRotations.Count - 1;
 
@@ -90,6 +80,28 @@ public class Rewind : MonoBehaviour
 
     public void EndRewinding()
     {
+        rewindPositions.Clear();
+        rewindRotations.Clear();
         doRewind = false;
+    }
+
+    private void RecordTransform()
+    {
+        rewindPositions.Add(myTransform.position);
+        rewindRotations.Add(myTransform.rotation);
+    }
+
+    private void RewindToTransform()
+    {
+        myTransform.position = rewindPositions[rewindPosIndex];
+        myTransform.rotation = rewindRotations[rewindQuatIndex];
+
+        rewindPosIndex--;
+        rewindQuatIndex--;
+
+        if (rewindPosIndex < 0 || rewindQuatIndex < 0)
+        {
+            EndRewinding();
+        }
     }
 }
