@@ -68,6 +68,7 @@ public class RewindableObject : MonoBehaviour
 
         myRigidbody.isKinematic = false;
         myRigidbody.AddForce(Random.insideUnitCircle.normalized * Random.Range(25, 100));
+        myRigidbody.AddTorque(Random.insideUnitCircle.normalized * Random.Range(5, 20));
     }
 
     public void EndRewindRecording()
