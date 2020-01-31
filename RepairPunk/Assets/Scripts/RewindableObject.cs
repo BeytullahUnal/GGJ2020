@@ -5,10 +5,12 @@ using UnityEngine;
 public class RewindableObject : MonoBehaviour
 {
     public bool holdForever;
-    public float holdDuration;
+    public int holdDuration;
     bool finalFall;
     private float recallEndTime;
     bool rewinded;
+
+    public TextMesh durationCountText;
 
     private List<Vector3> rewindPositions;
     private List<Quaternion> rewindRotations;
@@ -32,6 +34,8 @@ public class RewindableObject : MonoBehaviour
 
         myRigidbody = GetComponent<Rigidbody>();
         myTransform = GetComponent<Transform>();
+        durationCountText.text = "";
+
     }
 
     public void CustomUpdate()
@@ -58,6 +62,8 @@ public class RewindableObject : MonoBehaviour
 
         if (Time.time >= holdDuration + recallEndTime && !finalFall && !holdForever && rewinded)
         {
+            StopCoroutine(HoldDurationToText());
+            durationCountText.text = "";
             finalFall = true;
             myRigidbody.isKinematic = false;
         }
@@ -107,6 +113,8 @@ public class RewindableObject : MonoBehaviour
         rewindRotations.Clear();
         rewinded = true;
         recallEndTime = Time.time;
+        if(!holdForever)
+            StartCoroutine(HoldDurationToText());
         doRewind = false;
     }
 
@@ -131,5 +139,14 @@ public class RewindableObject : MonoBehaviour
         rewindPosIndex--;
         rewindQuatIndex--;
 
+    }
+
+    IEnumerator HoldDurationToText()
+    {
+        for(int i = holdDuration; i > 0; i--)
+        {
+            durationCountText.text = i.ToString();
+            yield return new WaitForSeconds(1);
+        }
     }
 }
