@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class RewindableObject : MonoBehaviour
 {
+    public bool holdForever;
     public float holdDuration;
+    bool finalFall;
+    private float recallEndTime;
+    bool rewinded;
 
     private List<Vector3> rewindPositions;
     private List<Quaternion> rewindRotations;
@@ -29,6 +33,10 @@ public class RewindableObject : MonoBehaviour
 
     public void CustomUpdate()
     {
+      
+        if (finalFall)
+            return;
+
         if (saveTransforms)
         {
             RecordTransform();
@@ -38,19 +46,29 @@ public class RewindableObject : MonoBehaviour
         {
             RewindToTransform();
         }
+
+        if (Time.time >= holdDuration + recallEndTime && !finalFall && !holdForever && rewinded)
+        {
+            finalFall = true;
+            myRigidbody.isKinematic = false;
+        }
     }
 
     public void InitiateRewindRecording()
     {
         if (saveTransforms) return;
 
-        myRigidbody.velocity = Vector3.zero;
+        if (finalFall) return;
 
+        myRigidbody.velocity = Vector3.zero;
+        
         RecordTransform();
 
         saveTransforms = true;
 
         myRigidbody.isKinematic = false;
+        myRigidbody.AddForce(Random.insideUnitCircle.normalized * Random.Range(25, 100));
+        myRigidbody.AddTorque(Random.insideUnitCircle.normalized * Random.Range(5, 20));
     }
 
     public void EndRewindRecording()
@@ -62,6 +80,8 @@ public class RewindableObject : MonoBehaviour
 
     public void RewindObject()
     {
+        if (finalFall) return;
+
         EndRewindRecording();
 
         rewindPosIndex = rewindPositions.Count - 1;
@@ -74,6 +94,8 @@ public class RewindableObject : MonoBehaviour
     {
         rewindPositions.Clear();
         rewindRotations.Clear();
+        rewinded = true;
+        recallEndTime = Time.time;
         doRewind = false;
     }
 

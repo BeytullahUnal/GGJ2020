@@ -28,6 +28,7 @@ public class RewindGroup : MonoBehaviour
     {
         if (Time.time >= recordStartTime + recordTime && recordTransforms)
         {
+            recordTransforms = false;
             StopObjectRecording();
         }
 
