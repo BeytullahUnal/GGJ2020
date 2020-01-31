@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rewind : MonoBehaviour
+public class RewindableObject : MonoBehaviour
 {
-    public float rewindDuration;
+    public float holdDuration;
 
     private List<Vector3> rewindPositions;
     private List<Quaternion> rewindRotations;
@@ -12,9 +12,6 @@ public class Rewind : MonoBehaviour
     private bool saveTransforms;
     private Rigidbody myRigidbody;
     private Transform myTransform;
-
-    private float recordStartTime;
-    private float rewindStartTime;
 
     private bool doRewind;
 
@@ -30,31 +27,16 @@ public class Rewind : MonoBehaviour
         myTransform = GetComponent<Transform>();
     }
 
-    private void Update()
+    public void CustomUpdate()
     {
-        if(saveTransforms)
+        if (saveTransforms)
         {
-            rewindPositions.Add(myTransform.position);
-            rewindRotations.Add(myTransform.rotation);
+            RecordTransform();
         }
 
-        if(Time.time >= recordStartTime + rewindDuration && saveTransforms)
+        if (doRewind)
         {
-            EndRewindRecording();
-        }
-
-        if(doRewind)
-        {
-            myTransform.position = rewindPositions[rewindPosIndex];
-            myTransform.rotation = rewindRotations[rewindQuatIndex];
-
-            rewindPosIndex--;
-            rewindQuatIndex--;
-
-            if(rewindPosIndex < 0 || rewindQuatIndex < 0)
-            {
-                EndRewinding();
-            }
+            RewindToTransform();
         }
     }
 
@@ -62,12 +44,10 @@ public class Rewind : MonoBehaviour
     {
         if (saveTransforms) return;
 
-        rewindPositions.Add(myTransform.position);
-        rewindRotations.Add(myTransform.rotation);
+        myRigidbody.velocity = Vector3.zero;
 
-        Debug.Log(myTransform.position);
+        RecordTransform();
 
-        recordStartTime = Time.time;
         saveTransforms = true;
 
         myRigidbody.isKinematic = false;
@@ -82,6 +62,8 @@ public class Rewind : MonoBehaviour
 
     public void RewindObject()
     {
+        EndRewindRecording();
+
         rewindPosIndex = rewindPositions.Count - 1;
         rewindQuatIndex = rewindRotations.Count - 1;
 
@@ -90,6 +72,31 @@ public class Rewind : MonoBehaviour
 
     public void EndRewinding()
     {
+        rewindPositions.Clear();
+        rewindRotations.Clear();
         doRewind = false;
+    }
+
+    private void RecordTransform()
+    {
+        rewindPositions.Add(myTransform.position);
+        rewindRotations.Add(myTransform.rotation);
+    }
+
+    private void RewindToTransform()
+    {
+
+        if (rewindPosIndex < 0 || rewindQuatIndex < 0)
+        {
+            EndRewinding();
+            return;
+        }
+
+        myTransform.position = rewindPositions[rewindPosIndex];
+        myTransform.rotation = rewindRotations[rewindQuatIndex];
+
+        rewindPosIndex--;
+        rewindQuatIndex--;
+
     }
 }
