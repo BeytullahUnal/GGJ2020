@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rewind : MonoBehaviour
+public class RewindableObject : MonoBehaviour
 {
-    public float rewindDuration;
+    public float holdDuration;
 
     private List<Vector3> rewindPositions;
     private List<Quaternion> rewindRotations;
@@ -12,9 +12,6 @@ public class Rewind : MonoBehaviour
     private bool saveTransforms;
     private Rigidbody myRigidbody;
     private Transform myTransform;
-
-    private float recordStartTime;
-    private float rewindStartTime;
 
     private bool doRewind;
 
@@ -30,14 +27,8 @@ public class Rewind : MonoBehaviour
         myTransform = GetComponent<Transform>();
     }
 
-    private void Update()
+    public void CustomUpdate()
     {
-
-        if (Time.time >= recordStartTime + rewindDuration && saveTransforms)
-        {
-            EndRewindRecording();
-        }
-
         if (saveTransforms)
         {
             RecordTransform();
@@ -53,9 +44,10 @@ public class Rewind : MonoBehaviour
     {
         if (saveTransforms) return;
 
+        myRigidbody.velocity = Vector3.zero;
+
         RecordTransform();
 
-        recordStartTime = Time.time;
         saveTransforms = true;
 
         myRigidbody.isKinematic = false;
@@ -93,15 +85,18 @@ public class Rewind : MonoBehaviour
 
     private void RewindToTransform()
     {
+
+        if (rewindPosIndex < 0 || rewindQuatIndex < 0)
+        {
+            EndRewinding();
+            return;
+        }
+
         myTransform.position = rewindPositions[rewindPosIndex];
         myTransform.rotation = rewindRotations[rewindQuatIndex];
 
         rewindPosIndex--;
         rewindQuatIndex--;
 
-        if (rewindPosIndex < 0 || rewindQuatIndex < 0)
-        {
-            EndRewinding();
-        }
     }
 }
