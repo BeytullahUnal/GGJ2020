@@ -22,6 +22,9 @@ public class RewindableObject : MonoBehaviour
     private int rewindPosIndex;
     private int rewindQuatIndex;
 
+    private float hoverPosY;
+    private bool onReleasePosition;
+
     private void Awake()
     {
         rewindPositions = new List<Vector3>();
@@ -34,6 +37,12 @@ public class RewindableObject : MonoBehaviour
     public void CustomUpdate()
     {
       
+        if(!saveTransforms && myRigidbody.isKinematic == true && !doRewind && !rewinded && onReleasePosition)
+        {
+            Vector3 hoverPos = new Vector3(myTransform.position.x, hoverPosY + .2f * Mathf.Sin(2 * Time.time), myTransform.position.z);
+            myTransform.position = hoverPos;
+        }
+
         if (finalFall)
             return;
 
@@ -75,6 +84,8 @@ public class RewindableObject : MonoBehaviour
     {
         saveTransforms = false;
         myRigidbody.isKinematic = true;
+        onReleasePosition = true;
+        hoverPosY = transform.position.y;
     }
 
 
