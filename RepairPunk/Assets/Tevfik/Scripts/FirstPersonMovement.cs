@@ -43,7 +43,7 @@ public class FirstPersonMovement : MonoBehaviour
         //moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
 
         Vector3 move = transform.right * x + transform.forward * z;
-        velocity.y += gravity * Time.deltaTime;
+        //velocity.y += gravity * Time.deltaTime;
         controller.Move(move * walkSpeed * Time.deltaTime);
 
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
