@@ -11,20 +11,20 @@ public class FirstPersonMovement : MonoBehaviour
     public float walkSpeed = 12f;
     public float gravity = -9.81f;
     Vector3 velocity;
-    public float jumpForce = 5000.0f;
+    public float jumpForce = 2;
     public float sprintSpeed = 15f;
+    public float dashForce = 5f;
 
     [Header("GroundChecks")]
     public Transform groundCheck;
-    public float groundDistance = 0.4f; 
+    public float groundDistance = 0.4f;
     public LayerMask groundMask;
     bool isGrounded;
+    private bool isDashing;
 
 
 
     //private Vector3 moveDirection = Vector3.zero;
-
-
 
     void Update()
     {
@@ -32,9 +32,9 @@ public class FirstPersonMovement : MonoBehaviour
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        if(isGrounded && velocity.y < 0)
+        if (!isGrounded)
         {
-            velocity.y = -2f;
+            controller.SimpleMove(Vector3.down);
         }
 
         float x = Input.GetAxis("Horizontal");
@@ -49,14 +49,59 @@ public class FirstPersonMovement : MonoBehaviour
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("Jumped");
+            //controller.Move(Vector3.up * jumpForce);
+            Jump();
         }
-            
+
         //Sprint
         if (Input.GetKey(KeyCode.LeftShift))
         {
             controller.Move(move * sprintSpeed * Time.deltaTime);
         }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Dash();
+        }
+
+
     }
-    
+
+    private void Dash()
+    {
+        if (!isDashing)
+        {
+            StartCoroutine(DashRoutine());
+            isDashing = true;
+        }
+    }
+
+    private IEnumerator DashRoutine()
+    {
+        var dashT = 0f;
+        while (dashT < .2f)
+        {
+            dashT += Time.deltaTime;
+            controller.Move(GetComponentInChildren<MouseLook>().transform.forward * dashForce * Time.deltaTime);
+            yield return null;
+        }
+        isDashing = false;
+    }
+
+    private void Jump()
+    {
+        StartCoroutine(JumpRoutine());
+    }
+
+    private IEnumerator JumpRoutine()
+    {
+        var jumpT = 0f;
+        while (jumpT < .3f)
+        {
+            jumpT += Time.deltaTime;
+            controller.Move(transform.up * jumpForce * Time.deltaTime);
+            yield return null;
+        }
+    }
 }
- 
+
