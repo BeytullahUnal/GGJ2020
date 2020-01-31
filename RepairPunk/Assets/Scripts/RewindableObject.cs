@@ -61,12 +61,13 @@ public class RewindableObject : MonoBehaviour
         if (finalFall) return;
 
         myRigidbody.velocity = Vector3.zero;
-
+        
         RecordTransform();
 
         saveTransforms = true;
 
         myRigidbody.isKinematic = false;
+        myRigidbody.AddForce(Random.insideUnitCircle.normalized * Random.Range(25, 100));
     }
 
     public void EndRewindRecording()
