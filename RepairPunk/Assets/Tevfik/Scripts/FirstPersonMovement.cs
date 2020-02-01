@@ -22,31 +22,10 @@ public class FirstPersonMovement : MonoBehaviour
     bool isGrounded;
     private bool isDashing;
 
-    [Header("Ray")]
-    Ray RayOrigin;
-    RaycastHit HitInfo;
 
-    
-
-
-
-
-
-        //private Vector3 moveDirection = Vector3.zero;
-
-        void Update()
-        {
-
-        if (Input.GetKey(KeyCode.E))
-        {
-            RayOrigin = Camera.main.ViewportPointToRay(new Vector3(0, 0, 0));
-            if (Physics.Raycast(RayOrigin, out HitInfo, 100f))
-            {
-                Debug.DrawRay(RayOrigin.direction, HitInfo.point, Color.yellow);
-                //if() rewindable
-            }
-        }
-        Debug.Log(isGrounded);
+    void Update()
+    {
+        //Debug.Log(isGrounded);
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 

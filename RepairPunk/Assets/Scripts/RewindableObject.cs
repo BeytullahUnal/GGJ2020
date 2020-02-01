@@ -5,10 +5,12 @@ using UnityEngine;
 public class RewindableObject : MonoBehaviour
 {
     public bool holdForever;
-    public float holdDuration;
+    public int holdDuration;
     bool finalFall;
     private float recallEndTime;
     bool rewinded;
+
+    public TextMesh durationCountText;
 
     private List<Vector3> rewindPositions;
     private List<Quaternion> rewindRotations;
@@ -22,6 +24,9 @@ public class RewindableObject : MonoBehaviour
     private int rewindPosIndex;
     private int rewindQuatIndex;
 
+    private float hoverPosY;
+    private bool onReleasePosition;
+
     private void Awake()
     {
         rewindPositions = new List<Vector3>();
@@ -29,11 +34,20 @@ public class RewindableObject : MonoBehaviour
 
         myRigidbody = GetComponent<Rigidbody>();
         myTransform = GetComponent<Transform>();
+        if(durationCountText)
+            durationCountText.text = "";
+
     }
 
     public void CustomUpdate()
     {
       
+        if(!saveTransforms && myRigidbody.isKinematic == true && !doRewind && !rewinded && onReleasePosition)
+        {
+            Vector3 hoverPos = new Vector3(myTransform.position.x, hoverPosY + .2f * Mathf.Sin(2 * Time.time), myTransform.position.z);
+            myTransform.position = hoverPos;
+        }
+
         if (finalFall)
             return;
 
@@ -49,6 +63,12 @@ public class RewindableObject : MonoBehaviour
 
         if (Time.time >= holdDuration + recallEndTime && !finalFall && !holdForever && rewinded)
         {
+            if (durationCountText)
+            {
+                StopCoroutine(HoldDurationToText());
+                durationCountText.text = "";
+            }
+                
             finalFall = true;
             myRigidbody.isKinematic = false;
         }
@@ -75,6 +95,8 @@ public class RewindableObject : MonoBehaviour
     {
         saveTransforms = false;
         myRigidbody.isKinematic = true;
+        onReleasePosition = true;
+        hoverPosY = transform.position.y;
     }
 
 
@@ -96,6 +118,14 @@ public class RewindableObject : MonoBehaviour
         rewindRotations.Clear();
         rewinded = true;
         recallEndTime = Time.time;
+        if(!holdForever)
+        {
+            if (durationCountText)
+            {
+                StartCoroutine(HoldDurationToText());
+            }
+        }
+            
         doRewind = false;
     }
 
@@ -120,5 +150,14 @@ public class RewindableObject : MonoBehaviour
         rewindPosIndex--;
         rewindQuatIndex--;
 
+    }
+
+    IEnumerator HoldDurationToText()
+    {
+        for(int i = holdDuration; i > 0; i--)
+        {
+            durationCountText.text = i.ToString();
+            yield return new WaitForSeconds(1);
+        }
     }
 }

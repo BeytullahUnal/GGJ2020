@@ -75,4 +75,14 @@ public class RewindGroup : MonoBehaviour
         }
     }
 
+    public void HightlightForInteraction()
+    {
+        Debug.Log("Lit For Interaction");
+    }
+
+    public void RemoveHightlight()
+    {
+        Debug.Log("Unlit for no interaction yeeee boiii");
+    }
+
 }
