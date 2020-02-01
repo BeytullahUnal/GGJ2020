@@ -324,8 +324,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abacff5b173f95f4e850a24136414084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdForever: 0
-  holdDuration: 0
+  holdForever: 1
+  holdDuration: 5
   myRigidbody: {fileID: 548802255}
   myTransform: {fileID: 548802250}
   rewindPositions: []
@@ -453,8 +453,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abacff5b173f95f4e850a24136414084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdForever: 0
-  holdDuration: 0
+  holdForever: 1
+  holdDuration: 5
   myRigidbody: {fileID: 595235443}
   myTransform: {fileID: 595235438}
   rewindPositions: []
@@ -582,8 +582,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abacff5b173f95f4e850a24136414084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdForever: 0
-  holdDuration: 0
+  holdForever: 1
+  holdDuration: 5
   myRigidbody: {fileID: 1006989768}
   myTransform: {fileID: 1006989763}
   rewindPositions: []
@@ -838,8 +838,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abacff5b173f95f4e850a24136414084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdForever: 0
-  holdDuration: 0
+  holdForever: 1
+  holdDuration: 5
   myRigidbody: {fileID: 1546490599}
   myTransform: {fileID: 1546490594}
   rewindPositions: []

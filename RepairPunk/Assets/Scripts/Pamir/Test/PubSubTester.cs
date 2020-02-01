@@ -1,5 +1,6 @@
 ﻿using Game_Events;
 using UnityEngine;
+using Utilities.EventManager;
 using Utilities.Publisher_Subscriber_System;
 
 namespace Pamir.Test {
@@ -14,12 +15,18 @@ namespace Pamir.Test {
         {
             gameStartEventSubscription = PublisherSubscriber.Subscribe<GameEventType>(GameStartEventHandler);
             gameEndEventSubscription = PublisherSubscriber.Subscribe<GameEventType>(GameEndEventHandler);
+
+            GameEventManager.OnGameStartEvent += OnGameStartEventHandler;
+            GameEventManager.OnGameEndEvent += OnGameEndEventHandler;
         }
 
         private void OnDisable()
         {
             PublisherSubscriber.Unsubscribe(gameStartEventSubscription);
             PublisherSubscriber.Unsubscribe(gameEndEventSubscription);
+            
+            GameEventManager.OnGameStartEvent -= OnGameStartEventHandler;
+            GameEventManager.OnGameEndEvent -= OnGameEndEventHandler;
         }
 
         private void GameStartEventHandler(GameEventType gameEventType)
@@ -36,6 +43,16 @@ namespace Pamir.Test {
             {
                 rewindableObjectGroup.RecallObjects();
             }
+        }
+
+        private void OnGameStartEventHandler()
+        {
+            rewindableObjectGroup.ReleaseObjects();
+        }
+
+        private void OnGameEndEventHandler()
+        {
+            rewindableObjectGroup.RecallObjects();
         }
     }
 }

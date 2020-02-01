@@ -1,5 +1,6 @@
 ﻿using Game_Events;
 using UnityEngine;
+using Utilities.EventManager;
 using Utilities.Publisher_Subscriber_System;
 
 namespace Pamir.Manager {
@@ -15,6 +16,16 @@ namespace Pamir.Manager {
             if (Input.GetKeyDown(KeyCode.E))
             {
                 PublisherSubscriber.Publish(GameEventType.GameEnd);
+            }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                GameEventManager.RaiseOnGameStartEvent();
+            }
+
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                GameEventManager.RaiseOnGameEndEvent();
             }
         }
     }
