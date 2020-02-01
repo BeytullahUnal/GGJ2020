@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4765598277740154151}
   - component: {fileID: 4449031671525451495}
   - component: {fileID: 7185844692021335433}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Static_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,6 +92,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 092a87d2af6648f428dcdf5ce42ff41a, type: 2}
