@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Pamir\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Pamir\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_RepairPunk.-96225122.00" t="ExcludeRecursive" />
+    <e p="D:\Projects\GGJ2020\RepairPunk" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Editor" t="Include">
+          <e p="PamirEditor" t="Include">
+            <e p="RewindableObjectGroupEditor.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="e.cs" t="Include" />
+          <e p="Game Events" t="Include">
+            <e p="GameEventType.cs" t="Include" />
+          </e>
+          <e p="Pamir" t="Include">
+            <e p="Manager" t="Include">
+              <e p="DummyGameManager.cs" t="Include" />
+            </e>
+            <e p="RecordedRewindableObject.cs" t="Include" />
+            <e p="RewindableObjectGroup.cs" t="Include" />
+            <e p="Test" t="Include">
+              <e p="PubSubTester.cs" t="Include" />
+            </e>
+          </e>
+          <e p="RewindableObject.cs" t="Include" />
+          <e p="RewindGroup.cs" t="Include" />
+          <e p="Utilities" t="Include">
+            <e p="Object Pooling System" t="Include">
+              <e p="ObjectPooler.cs" t="Include" />
+              <e p="ObjectPoolItem.cs" t="Include" />
+              <e p="PoolItemType.cs" t="Include" />
+            </e>
+            <e p="Publisher Subscriber System" t="Include">
+              <e p="PublisherSubscriber.cs" t="Include" />
+              <e p="Subscription.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Tevfik" t="Include">
+          <e p="Scripts" t="Include">
+            <e p="FirstPersonMovement.cs" t="Include" />
+            <e p="Grapple.cs" t="Include" />
+            <e p="MouseLook.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="RepairPunk.sln" t="IncludeFlat" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
