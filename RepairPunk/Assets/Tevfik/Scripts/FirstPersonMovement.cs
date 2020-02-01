@@ -11,7 +11,7 @@ public class FirstPersonMovement : MonoBehaviour
     public float walkSpeed = 12f;
     public float gravity = -9.81f;
     Vector3 velocity;
-    public float jumpForce = 2;
+    public float jumpDest = 1.2f;
     public float sprintSpeed = 15f;
     public float dashForce = 5f;
 
@@ -22,19 +22,37 @@ public class FirstPersonMovement : MonoBehaviour
     bool isGrounded;
     private bool isDashing;
 
+    [Header("Ray")]
+    Ray RayOrigin;
+    RaycastHit HitInfo;
+
+    
 
 
-    //private Vector3 moveDirection = Vector3.zero;
 
-    void Update()
-    {
+
+
+        //private Vector3 moveDirection = Vector3.zero;
+
+        void Update()
+        {
+
+        if (Input.GetKey(KeyCode.E))
+        {
+            RayOrigin = Camera.main.ViewportPointToRay(new Vector3(0, 0, 0));
+            if (Physics.Raycast(RayOrigin, out HitInfo, 100f))
+            {
+                Debug.DrawRay(RayOrigin.direction, HitInfo.point, Color.yellow);
+                //if() rewindable
+            }
+        }
         Debug.Log(isGrounded);
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        if (!isGrounded)
+        if (isGrounded && velocity.y < 0)
         {
-            controller.SimpleMove(Vector3.down);
+            velocity.y = -2f;
         }
 
         float x = Input.GetAxis("Horizontal");
@@ -43,8 +61,11 @@ public class FirstPersonMovement : MonoBehaviour
         //moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
 
         Vector3 move = transform.right * x + transform.forward * z;
-        //velocity.y += gravity * Time.deltaTime;
+        velocity.y += gravity * Time.deltaTime;
+
         controller.Move(move * walkSpeed * Time.deltaTime);
+
+        controller.Move(velocity * Time.deltaTime);
 
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
@@ -90,10 +111,11 @@ public class FirstPersonMovement : MonoBehaviour
 
     private void Jump()
     {
-        StartCoroutine(JumpRoutine());
+        //StartCoroutine(JumpRoutine());
+        velocity.y = Mathf.Sqrt(jumpDest * -1f * gravity); 
     }
 
-    private IEnumerator JumpRoutine()
+    /*private IEnumerator JumpRoutine()
     {
         var jumpT = 0f;
         while (jumpT < .3f)
@@ -102,6 +124,6 @@ public class FirstPersonMovement : MonoBehaviour
             controller.Move(transform.up * jumpForce * Time.deltaTime);
             yield return null;
         }
-    }
+    }*/
 }
 
