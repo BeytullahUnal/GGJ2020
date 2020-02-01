@@ -46,5 +46,14 @@ public class PlayerInteraction : MonoBehaviour
             }
             lastHighlightedObject = null;
         }
+
+        if(lastRewindGroup)
+        {
+            if(Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                lastRewindGroup.RecallObjects();
+                lastRewindGroup = null;
+            }
+        }
     }
 }
