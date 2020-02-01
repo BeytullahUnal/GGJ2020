@@ -34,7 +34,8 @@ public class RewindableObject : MonoBehaviour
 
         myRigidbody = GetComponent<Rigidbody>();
         myTransform = GetComponent<Transform>();
-        durationCountText.text = "";
+        if(durationCountText)
+            durationCountText.text = "";
 
     }
 
@@ -62,8 +63,12 @@ public class RewindableObject : MonoBehaviour
 
         if (Time.time >= holdDuration + recallEndTime && !finalFall && !holdForever && rewinded)
         {
-            StopCoroutine(HoldDurationToText());
-            durationCountText.text = "";
+            if (durationCountText)
+            {
+                StopCoroutine(HoldDurationToText());
+                durationCountText.text = "";
+            }
+                
             finalFall = true;
             myRigidbody.isKinematic = false;
         }
@@ -114,7 +119,13 @@ public class RewindableObject : MonoBehaviour
         rewinded = true;
         recallEndTime = Time.time;
         if(!holdForever)
-            StartCoroutine(HoldDurationToText());
+        {
+            if (durationCountText)
+            {
+                StartCoroutine(HoldDurationToText());
+            }
+        }
+            
         doRewind = false;
     }
 

@@ -28,7 +28,7 @@ public class FirstPersonMovement : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(isGrounded);
+        //Debug.Log(isGrounded);
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
